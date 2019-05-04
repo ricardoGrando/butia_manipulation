@@ -12,8 +12,8 @@
             shoulder_elbow_joint_position_controller 
             elbow_pitch_joint_up_position_controller      
             elbow_pitch_joint_down_position_controller
-            gripper_pitch_joint_position_controller     
-            hearth_joint_position_controller
+            gripper_pitch_joint_position_controller   
+            
             gripper_yaw_joint_position_controller
             gripper_roll_joint_position_controller
             gripper_right_joint_position_controller

@@ -372,7 +372,7 @@
   <joint name="shoulder_yaw_joint" type="revolute">
     <parent link="shoulder"/>
     <child link="shoulder_pitch"/>
-    <origin xyz="0.065 0.0 0.065" rpy="0 0 0"/>
+    <origin xyz="0.0645 0.0 0.065" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit velocity="6.5" effort="1000" lower="${-pi*0.5}" upper="${pi*0.5}" />
     <dynamics damping="0.1" friction="0.0" />
@@ -387,7 +387,7 @@
     </collision>
 
     <visual>
-      <origin xyz="-0.12 -0.08 0.05" rpy="3.1415 0 1.9"/>
+      <origin xyz="-0.1180 -0.08 0.053" rpy="3.1415 0 1.9"/>
       <geometry>
 	      <mesh filename="package://doris_description/urdf/meshes/shoulderpitch.dae" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -408,7 +408,7 @@
   <joint name="shoulder_pitch_joint_down" type="continuous">
     <parent link="shoulder_pitch"/>
     <child link="shoulder_elbow_link_down"/>    
-    <origin xyz="-0.015 0.0 -0.095" rpy="0 0 0"/>
+    <origin xyz="-0.01105 0.0 -0.0915" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.7"/> 
   </joint>
@@ -445,7 +445,7 @@
   <joint name="shoulder_pitch_joint_up" type="continuous">
     <parent link="shoulder_pitch"/>
     <child link="shoulder_elbow_link_up"/>    
-    <origin xyz="-0.015 0.0 -0.04" rpy="0 0 0"/>
+    <origin xyz="-0.01105 0.0 -0.0365" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.7"/> 
   </joint>
@@ -497,7 +497,7 @@
     </collision>
 
     <visual>
-      <origin xyz="0.13 -0.04 -0.14" rpy="0 0 1.5707"/>
+      <origin xyz="0.1265 -0.04 -0.14" rpy="0 0 1.5707"/>
       <geometry>
         <mesh filename="package://doris_description/urdf/meshes/elbow.dae" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -518,7 +518,7 @@
   <joint name="elbow_pitch_joint_up" type="continuous">
     <parent link="elbow"/>
     <child link="elbow_wrist_link_up"/>    
-    <origin xyz="0.11 0.0 0.0" rpy="0 0 0"/>
+    <origin xyz="0.1045 0.0 0.0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.7"/> 
   </joint>
@@ -532,7 +532,7 @@
     </collision>
 
     <visual>
-      <origin xyz="-0.03 -0.0425 0.075" rpy="3.08 0 1.5707"/>
+      <origin xyz="-0.027 -0.0425 0.0715" rpy="3.08 0 1.5707"/>
       <geometry>
         <mesh filename="package://doris_description/urdf/meshes/elbow_wrist.dae" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -552,7 +552,7 @@
   <joint name="elbow_pitch_joint_down" type="continuous">
     <parent link="elbow"/>
     <child link="elbow_wrist_link_down"/>    
-    <origin xyz="0.11 0.0 -0.055" rpy="0 0 0"/>
+    <origin xyz="0.1045 0.0 -0.055" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.7"/> 
   </joint>
@@ -566,7 +566,7 @@
     </collision>
 
     <visual>
-      <origin xyz="0.24 -0.0425 -0.07" rpy="-0.06 0 1.5707"/>
+      <origin xyz="0.24 -0.0425 -0.0715" rpy="-0.06 0 1.5707"/>
       <geometry>
         <mesh filename="package://doris_description/urdf/meshes/elbow_wrist.dae" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -583,16 +583,21 @@
     </inertial>
   </link>
 
-  <joint name="hearth_joint" type="continuous">
+  <!-- <joint name="hearth_joint" type="continuous">
     <parent link="elbow_wrist_link_up"/>
     <child link="hearth_link"/>    
-    <origin xyz="0.21 0.0 0.0" rpy="0 0 0"/>
+    <origin xyz="0.214 0.0 0.0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.7"/> 
-  </joint>
+  </joint>  -->
 
-  <link name="hearth_link">
-    
+  <joint name="hearth_joint" type="fixed">
+    <parent link="elbow_wrist_link_up"/>
+    <child link="hearth_link"/>    
+    <origin xyz="0.215 0.0 0.0" rpy="0 0 0"/>   
+  </joint> 
+
+  <link name="hearth_link">    
     <visual>
       <origin xyz="-0.015 0.0 -0.067" rpy="0 0 0"/>
       <geometry>
@@ -614,7 +619,7 @@
   <joint name="gripper_pitch_joint" type="continuous">
     <parent link="hearth_link"/>
     <child link="gripper_pitch"/>    
-    <origin xyz="0.02 0.0 -0.02" rpy="0 0 0"/>
+    <origin xyz="0.0225 0.0 -0.024" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.7"/> 
   </joint>
@@ -628,7 +633,7 @@
     </collision>
 
     <visual>
-      <origin xyz="-0.0475 0.0 -0.075" rpy="1.5707 0 0"/>
+      <origin xyz="-0.05 0.0 -0.0725" rpy="1.5707 0 0"/>
       <geometry>
         <mesh filename="package://doris_description/urdf/meshes/base_gripper.dae" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -648,7 +653,7 @@
   <joint name="gripper_yaw_joint" type="continuous">
     <parent link="gripper_pitch"/>
     <child link="gripper_yaw"/>    
-    <origin xyz="0.0025 0.0 -0.035" rpy="0 0 0"/>
+    <origin xyz="0.0 0.0 -0.03" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <dynamics damping="0.7"/> 
   </joint>
@@ -683,7 +688,7 @@
   <joint name="gripper_roll_joint" type="continuous">
     <parent link="gripper_yaw"/>
     <child link="gripper_roll"/>    
-    <origin xyz="0.09 0.0 0.045" rpy="0 0 0"/>
+    <origin xyz="0.09 0.0 0.044" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <dynamics damping="0.7"/> 
   </joint>
@@ -697,7 +702,7 @@
     </collision>
 
     <visual>
-      <origin xyz="-0.0 0.0 -0.015" rpy="1.5707 0 0"/>
+      <origin xyz="-0.0 0.0 -0.0125" rpy="1.5707 0 0"/>
       <geometry>
         <mesh filename="package://doris_description/urdf/meshes/gripper_roll.dae" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -849,7 +854,7 @@
     </actuator>
   </transmission>
 
-  <transmission name="trangripperhearth">
+  <!-- <transmission name="trangripperhearth">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="hearth_joint">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -858,7 +863,7 @@
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
-  </transmission>
+  </transmission> -->
 
   <transmission name="trangripperpitch">
     <type>transmission_interface/SimpleTransmission</type>
