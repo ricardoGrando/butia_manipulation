@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>doris_control</name>
+  <name>doris_kinematics</name>
   <version>0.0.0</version>
-  <description>The doris_control package</description>
+  <description>The doris_kinematicspackage</description>
 
   <maintainer email="ricardogrando13@gmail.com">Ricardo Grando</maintainer>
 
