@@ -25,8 +25,7 @@ import geometry_msgs.msg
 
 
 topicList = [   '/doris/shoulder_yaw_joint_position_controller/command',
-                '/doris/shoulder_pitch_joint_up_position_controller/command',
-                '/doris/shoulder_elbow_joint_position_controller/command',               
+                '/doris/shoulder_pitch_joint_up_position_controller/command',                               
                 '/doris/elbow_pitch_joint_up_position_controller/command',                
                 '/doris/gripper_pitch_joint_position_controller/command',
                 '/doris/gripper_yaw_joint_position_controller/command',
@@ -40,8 +39,12 @@ publishers = []
 for topic in topicList:
     publishers.append(rospy.Publisher(topic, Float64, queue_size=10))
 
+shoulder_elbow_joint = rospy.Publisher('/doris/shoulder_elbow_joint_position_controller/command', Float64, queue_size=10)
 shoulder_pitch_joint_down = rospy.Publisher('/doris/shoulder_pitch_joint_down_position_controller/command', Float64, queue_size=10)
-elbow_pitch_joint_down= rospy.Publisher('/doris/elbow_pitch_joint_down_position_controller/command', Float64, queue_size=10)
+elbow_pitch_joint_down = rospy.Publisher('/doris/elbow_pitch_joint_down_position_controller/command', Float64, queue_size=10)
+hearth_pitch_joint_down = rospy.Publisher('/doris/hearth_joint_position_controller/command', Float64, queue_size=10)
+
+
 
 def inverse_kinematics_callback(data):
     # Pegar o target_end_effector da mensagem recebida e converter para array de numpy
@@ -156,20 +159,23 @@ if __name__ == "__main__":
 
     rospy.init_node("doris_arm_control", anonymous=False)
 
-    endEffectorPosition = np.array([0.6541185258295739, 0.046567180097893, 0.9403768939877063, 0, 0.1, 0])
+    endEffectorPosition = np.array([0.5447546532517447, 0.0, 0.8987512626584708, 1.5707963267948966, 0.0, 1.57079632679489666])
 
-    trajectory = spiral(0.005, 0.1, endEffectorPosition, 2)
+    trajectory = spiral(0.01, 0.075, endEffectorPosition, 4)
 
-    angles = np.array([0.1,math.pi/4,-math.pi/4,-math.pi/4,math.pi/4,0.1,0.1]) 
+    angles = np.array([0,math.pi/4,-math.pi/4,0.0,0.0,0.1]) 
 
     rate = rospy.Rate(10)
 
     for j in range(0, len(publishers)):
-            publishers[j].publish(angles[j])  
-            if 'shoulder_pitch' in topicList[j]:
-                shoulder_pitch_joint_down.publish(angles[j])
-            if 'elbow_pitch_joint' in topicList[j]:
-                elbow_pitch_joint_down.publish(angles[j])
+        publishers[j].publish(angles[j])  
+        if 'shoulder_pitch' in topicList[j]:
+            shoulder_pitch_joint_down.publish(angles[j])
+            shoulder_elbow_joint.publish(-angles[j])
+        if 'elbow_pitch_joint' in topicList[j]:
+            elbow_pitch_joint_down.publish(angles[j])
+            hearth_pitch_joint_down.publish(-angles[j]) 
+        rate.sleep()
 
     raw_input()
 
@@ -196,8 +202,10 @@ if __name__ == "__main__":
             publishers[j].publish(angles[j])  
             if 'shoulder_pitch' in topicList[j]:
                 shoulder_pitch_joint_down.publish(angles[j])
+                shoulder_elbow_joint.publish(-angles[j])
             if 'elbow_pitch_joint' in topicList[j]:
                 elbow_pitch_joint_down.publish(angles[j])
+                hearth_pitch_joint_down.publish(-angles[j])            
 
         #atual_position[0] = 
 

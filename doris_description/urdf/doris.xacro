@@ -583,19 +583,19 @@
     </inertial>
   </link>
 
-  <!-- <joint name="hearth_joint" type="continuous">
+  <joint name="hearth_joint" type="continuous">
     <parent link="elbow_wrist_link_up"/>
     <child link="hearth_link"/>    
-    <origin xyz="0.214 0.0 0.0" rpy="0 0 0"/>
+    <origin xyz="0.215 0.0 0.0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <dynamics damping="0.7"/> 
-  </joint>  -->
+  </joint> 
 
-  <joint name="hearth_joint" type="fixed">
+  <!-- <joint name="hearth_joint" type="fixed">
     <parent link="elbow_wrist_link_up"/>
     <child link="hearth_link"/>    
     <origin xyz="0.215 0.0 0.0" rpy="0 0 0"/>   
-  </joint> 
+  </joint>  -->
 
   <link name="hearth_link">    
     <visual>
@@ -854,7 +854,7 @@
     </actuator>
   </transmission>
 
-  <!-- <transmission name="trangripperhearth">
+  <transmission name="trangripperhearth">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="hearth_joint">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -863,7 +863,7 @@
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
-  </transmission> -->
+  </transmission>
 
   <transmission name="trangripperpitch">
     <type>transmission_interface/SimpleTransmission</type>
