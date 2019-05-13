@@ -51,7 +51,7 @@ def inverse_kinematics_callback(data):
     target_position = np.array([data.target_end_effector[0], data.target_end_effector[1], data.target_end_effector[2], data.target_end_effector[3], data.target_end_effector[4], data.target_end_effector[5]])
 
     # Angulos da posicao inicial
-    angles = np.array([0.1,0.1,0.1,0.1,0.1,0.1]) 
+    angles = np.array([0.,math.pi/4,-math.pi/4,0.,0.,0.]) 
 
     # Taxa de sleep
     rate = rospy.Rate(10)
@@ -67,26 +67,33 @@ def inverse_kinematics_callback(data):
             elbow_pitch_joint_down.publish(angles[j])
             hearth_pitch_joint_down.publish(-angles[j]) 
         rate.sleep()
-
-    raw_input()
-    
+   
     while(True):
-		# Realizar a cinematica direta para obter a posicao e orientacao cartesiana do end effector
+        # Realizar a cinematica direta para obter a posicao e orientacao cartesiana do end effector
         atual_position = forwardKinematics(angles)
         distance = target_position - atual_position
+
+        print(atual_position)
+        # print(distance)
+
+        # raw_input()
             
-        if (max(abs(target_position - atual_position)) > 0.001):
+        if (max(abs(distance)) > 0.01):
             J = calc_jacobian(angles)
             # Inverter a matriz
-            J_inv = np.linalg.inv(J)
+            J_inv = np.linalg.pinv(J)
             # Calcular o delta do end_effector
             # O MAIOR ELEMENTO DO VETOR DO DELTA DO END EFFECTOR NAO PODE SER MAIOR QUE step_size
-            delta_end_effector = ((distance)*data.step_size)/np.max(max(distance))
+
+            # print(distance)
+            # print(data.step_size)
+            # print(np.max(max(distance)))
+            delta_end_effector = ((distance)*data.step_size)/np.max(max(abs(distance)))
+
+            # print(delta_end_effector)
             # Calcular o delta dos angulos, dado esse delta do end effector
             delta_angles = J_inv.dot(delta_end_effector)
             # Calcular os novos angulos
-
-            print(angles)
 
             if max(delta_angles) > 0.1:
                 while(max(delta_angles) > 0.1):
