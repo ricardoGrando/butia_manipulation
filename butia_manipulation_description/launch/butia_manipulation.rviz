@@ -116,7 +116,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00999999978
       Style: Flat Squares
-      Topic: /doris/laser/scan
+      Topic: /butia_manipulation/laser/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -124,7 +124,7 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /doris/camera1/image_raw
+      Image Topic: /butia_manipulation/camera1/image_raw
       Name: Camera
       Overlay Alpha: 0.5
       Queue Size: 2

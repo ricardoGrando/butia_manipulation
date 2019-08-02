@@ -9,7 +9,7 @@
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find doris_gazebo)/worlds/doris.world"/>
+    <arg name="world_name" value="$(find butia_manipulation_gazebo)/worlds/butia_manipulation.world"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
@@ -19,13 +19,13 @@
 
   <!-- Load the URDF into the ROS Parameter Server -->
   <param name="robot_description"
-    command="$(find xacro)/xacro --inorder '$(find doris_description)/urdf/doris.xacro'" />
+    command="$(find xacro)/xacro --inorder '$(find butia_manipulation_description)/urdf/butia_manipulation.xacro'" />
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-    args="-urdf -model doris -param robot_description"/>
+    args="-urdf -model butia_manipulation -param robot_description"/>
 
-  <!-- ros_control doris launch file -->
-  <!--include file="$(find doris_control)/launch/doris_control.launch" /-->
+  <!-- ros_control butia_manipulation launch file -->
+  <!--include file="$(find butia_manipulation_control)/launch/butia_manipulation_control.launch" /-->
 
 </launch>

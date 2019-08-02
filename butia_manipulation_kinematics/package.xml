@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>doris_kinematics</name>
+  <name>butia_manipulation_kinematics</name>
   <version>0.0.0</version>
-  <description>The doris_kinematicspackage</description>
+  <description>The butia_manipulation_kinematics_package</description>
 
   <maintainer email="ricardogrando13@gmail.com">Ricardo Grando</maintainer>
 
@@ -21,10 +21,10 @@
 
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
-  <build_depend>inno_arm_control_msgs</build_depend>
+  <build_depend>butia_manipulation_msgs</build_depend>
   <run_depend>rospy</run_depend>
   <run_depend>std_msgs</run_depend>
-  <run_depend>inno_arm_control_msgs</run_depend>
+  <run_depend>butia_manipulation_msgs</run_depend>
 
   <build_depend>message_generation</build_depend>
   <run_depend>message_runtime</run_depend>

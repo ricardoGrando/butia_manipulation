@@ -1,7 +1,7 @@
 <package>
-  <name>doris_gazebo</name>
+  <name>butia_manipulation_gazebo</name>
   <version>0.1.0</version>
-  <description>doris_gazebo</description>
+  <description>butia_manipulation_gazebo</description>
   <maintainer email="ricardogrando13@gmail.com">Ricardo Grando</maintainer>
 
   <license>BSD</license>
@@ -13,8 +13,8 @@
   <run_depend>gazebo_plugins</run_depend>
   <run_depend>gazebo_ros</run_depend>
   <run_depend>gazebo_ros_control</run_depend>
-  <run_depend>doris_control</run_depend>
-  <run_depend>doris_description</run_depend>
+  <run_depend>butia_manipulation_control</run_depend>
+  <run_depend>butia_manipulation_description</run_depend>
   <run_depend>xacro</run_depend>
   <run_depend>sensor_msgs</run_depend>
   

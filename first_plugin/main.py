@@ -15,17 +15,17 @@ import numpy as np
 
 PUBLISHER_RATE_SLEEP = 2
 
-pubList =  [    '/doris/shoulder_yaw_joint_position_controller/command',
-                '/doris/shoulder_pitch_joint_up_position_controller/command',
-                '/doris/shoulder_pitch_joint_down_position_controller/command',
-                '/doris/shoulder_elbow_joint_position_controller/command',
-                '/doris/elbow_pitch_joint_up_position_controller/command',
-                '/doris/elbow_pitch_joint_down_position_controller/command',
-                '/doris/gripper_pitch_joint_position_controller/command',
-                '/doris/gripper_yaw_joint_position_controller/command',
-                '/doris/gripper_roll_joint_position_controller/command',
-                '/doris/gripper_right_joint_position_controller/command',
-                '/doris/gripper_left_joint_position_controller/command'
+pubList =  [    '/butia_manipulation/shoulder_yaw_joint_position_controller/command',
+                '/butia_manipulation/shoulder_pitch_joint_up_position_controller/command',
+                '/butia_manipulation/shoulder_pitch_joint_down_position_controller/command',
+                '/butia_manipulation/shoulder_elbow_joint_position_controller/command',
+                '/butia_manipulation/elbow_pitch_joint_up_position_controller/command',
+                '/butia_manipulation/elbow_pitch_joint_down_position_controller/command',
+                '/butia_manipulation/gripper_pitch_joint_position_controller/command',
+                '/butia_manipulation/gripper_yaw_joint_position_controller/command',
+                '/butia_manipulation/gripper_roll_joint_position_controller/command',
+                '/butia_manipulation/gripper_right_joint_position_controller/command',
+                '/butia_manipulation/gripper_left_joint_position_controller/command'
             ]
 
 value = [   [0, 1.5, -1.5, 0, 0, 0, 0, 0] 

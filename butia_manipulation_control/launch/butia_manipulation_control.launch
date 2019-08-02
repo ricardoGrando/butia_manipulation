@@ -1,11 +1,11 @@
 <launch>
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find doris_control)/config/doris_control.yaml" command="load"/>
+  <rosparam file="$(find butia_manipulation_control)/config/butia_manipulation_control.yaml" command="load"/>
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-	output="screen" ns="/doris" args="joint_state_controller
+	output="screen" ns="/butia_manipulation" args="joint_state_controller
             shoulder_yaw_joint_position_controller                         
             shoulder_pitch_joint_up_position_controller
             shoulder_pitch_joint_down_position_controller            
@@ -37,7 +37,7 @@
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
 	respawn="false" output="screen">
-    <remap from="/joint_states" to="/doris/joint_states" />
+    <remap from="/joint_states" to="/butia_manipulation/joint_states" />
   </node>
 
 

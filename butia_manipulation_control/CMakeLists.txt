@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(doris_control)
+project(butia_manipulation_control)
 
 find_package(catkin REQUIRED
   rospy
   std_msgs
-  inno_arm_control_msgs
+  butia_manipulation_msgs
   message_generation
   message_runtime
 )

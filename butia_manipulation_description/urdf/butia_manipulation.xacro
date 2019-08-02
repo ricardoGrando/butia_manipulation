@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Revolute-Revolute Manipulator -->
-<robot name="doris" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="butia_manipulation" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- Constants for robot dimensions -->
   <xacro:property name="PI" value="3.1415926535897931"/>
@@ -11,9 +11,9 @@
   <xacro:property name="height_riser" value="0.925" /> <!-- Link 1 -->
   
   <!-- Import all Gazebo-customization elements, including Gazebo colors -->
-  <xacro:include filename="$(find doris_description)/urdf/doris.gazebo" />
+  <xacro:include filename="$(find butia_manipulation_description)/urdf/butia_manipulation.gazebo" />
   <!-- Import Rviz colors -->
-  <xacro:include filename="$(find doris_description)/urdf/materials.xacro" />
+  <xacro:include filename="$(find butia_manipulation_description)/urdf/materials.xacro" />
 
   <!--
   <link name="world"/>
@@ -38,13 +38,13 @@
 		<visual name="base_visual">
 			<origin xyz="0.0 -0.04 0.00" rpy="1.5707 1.5707 0"/>
 			<geometry>
-				<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+				<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 			</geometry>			
 		</visual>
 		<collision>
 			<origin xyz="0.0 -0.04 0.00" rpy="1.5707 1.5707 0"/>
 				<geometry>
-					<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+					<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 				</geometry>
 		</collision>
 	</link>
@@ -72,13 +72,13 @@
 		<visual name="base_visual">
 			<origin xyz="0.0 0.04 0.00" rpy="1.5707 1.5707 0"/>
 			<geometry>
-				<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+				<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 			</geometry>			
 		</visual>
 		<collision>
 			<origin xyz="0.0 0.04 0.00" rpy="1.5707 1.5707 0"/>
 				<geometry>
-					<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+					<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 				</geometry>
 		</collision>
 	</link>
@@ -106,13 +106,13 @@
 		<visual name="base_visual">
 			<origin xyz="0.0 0.04 0.00" rpy="1.5707 1.5707 0"/>
 			<geometry>
-				<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+				<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 			</geometry>			
 		</visual>
 		<collision>
 			<origin xyz="0.0 0.04 0.00" rpy="1.5707 1.5707 0"/>
 				<geometry>
-					<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+					<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 				</geometry>
 		</collision>
 	</link>
@@ -140,13 +140,13 @@
 		<visual name="base_visual">
 			<origin xyz="0.0 -0.04 0.00" rpy="1.5707 1.5707 0"/>
 			<geometry>
-				<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+				<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 			</geometry>			
 		</visual>
 		<collision>
 			<origin xyz="0.0 -0.04 0.00" rpy="1.5707 1.5707 0"/>
 				<geometry>
-					<mesh filename="package://doris_description/urdf/meshes/wheel.dae"/>
+					<mesh filename="package://butia_manipulation_description/urdf/meshes/wheel.dae"/>
 				</geometry>
 		</collision>
 	</link>
@@ -174,7 +174,7 @@
 		<visual name="base_visual">
 			<origin xyz="0 0 0.18" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://doris_description/urdf/meshes/chassis.dae"/>
+				<mesh filename="package://butia_manipulation_description/urdf/meshes/chassis.dae"/>
 			</geometry>			
 		</visual>
 		<collision>
@@ -210,7 +210,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/hokuyo.dae"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/hokuyo.dae"/>
       </geometry>
     </visual>
 
@@ -354,7 +354,7 @@
       <origin xyz="0 0.025 -0.065" rpy="0 0 -1.5707"/>
       <geometry>
 	      <!--<box size="${shoulder_x} ${shoulder_y} ${height_shoulder}"/> -->
-        <mesh filename="package://doris_description/urdf/meshes/shoulderyaw.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/shoulderyaw.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -389,7 +389,7 @@
     <visual>
       <origin xyz="-0.1180 -0.08 0.053" rpy="3.1415 0 1.9"/>
       <geometry>
-	      <mesh filename="package://doris_description/urdf/meshes/shoulderpitch.dae" scale="0.001 0.001 0.001"/>
+	      <mesh filename="package://butia_manipulation_description/urdf/meshes/shoulderpitch.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -424,7 +424,7 @@
     <visual>
       <origin xyz="-0.015 0.045 -0.085" rpy="0.04 0 -1.5707"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/shoulder_elbow.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/shoulder_elbow.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -461,7 +461,7 @@
     <visual>
       <origin xyz="-0.015 -0.04 0.085" rpy="3.18 0 1.5707"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/shoulder_elbow.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/shoulder_elbow.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -499,7 +499,7 @@
     <visual>
       <origin xyz="0.1265 -0.04 -0.14" rpy="0 0 1.5707"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/elbow.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/elbow.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -534,7 +534,7 @@
     <visual>
       <origin xyz="-0.027 -0.0425 0.0715" rpy="3.08 0 1.5707"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/elbow_wrist.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/elbow_wrist.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -568,7 +568,7 @@
     <visual>
       <origin xyz="0.24 -0.0425 -0.0715" rpy="-0.06 0 1.5707"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/elbow_wrist.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/elbow_wrist.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -601,7 +601,7 @@
     <visual>
       <origin xyz="-0.015 0.0 -0.067" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/hearth_gripper.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/hearth_gripper.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -635,7 +635,7 @@
     <visual>
       <origin xyz="-0.05 0.0 -0.0725" rpy="1.5707 0 0"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/base_gripper.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/base_gripper.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -669,7 +669,7 @@
     <visual>
       <origin xyz="-0.01 0.0 -0.0" rpy="1.5707 0 0"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/gripper_yaw.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/gripper_yaw.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -704,7 +704,7 @@
     <visual>
       <origin xyz="-0.0 0.0 -0.0125" rpy="1.5707 0 0"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/gripper_roll.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/gripper_roll.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -739,7 +739,7 @@
     <visual>
       <origin xyz="-0.0175 -0.0025 -0.0225" rpy="1.5707 0 0"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/gripper_right.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/gripper_right.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -773,7 +773,7 @@
     <visual>
       <origin xyz="0.0 0.0025 -0.0225" rpy="1.5707 0 0"/>
       <geometry>
-        <mesh filename="package://doris_description/urdf/meshes/gripper_left.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://butia_manipulation_description/urdf/meshes/gripper_left.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="orange"/>
     </visual>
@@ -925,13 +925,13 @@
 <!--
 
  
-rostopic pub -1 /doris/gripper_right_joint_position_controller/command std_msgs/Float64 "data: 0.0"
-rostopic pub -1 /doris/gripper_left_joint_position_controller/command std_msgs/Float64 "data: 0.0"
+rostopic pub -1 /butia_manipulation/gripper_right_joint_position_controller/command std_msgs/Float64 "data: 0.0"
+rostopic pub -1 /butia_manipulation/gripper_left_joint_position_controller/command std_msgs/Float64 "data: 0.0"
 
-rostopic pub -1 /doris/shoulder_yaw_joint_position_controller/command std_msgs/Float64 "data: 0"
-rostopic pub -1 /doris/shoulder_pitch_joint_up_position_controller/command std_msgs/Float64 "data: 0."
-rostopic pub -1 /doris/shoulder_elbow_joint_up_position_controller/command std_msgs/Float64 "data: 0"
-rostopic pub -1 /doris/elbow_pitch_joint_up_position_controller/command std_msgs/Float64 "data: 0."
+rostopic pub -1 /butia_manipulation/shoulder_yaw_joint_position_controller/command std_msgs/Float64 "data: 0"
+rostopic pub -1 /butia_manipulation/shoulder_pitch_joint_up_position_controller/command std_msgs/Float64 "data: 0."
+rostopic pub -1 /butia_manipulation/shoulder_elbow_joint_up_position_controller/command std_msgs/Float64 "data: 0"
+rostopic pub -1 /butia_manipulation/elbow_pitch_joint_up_position_controller/command std_msgs/Float64 "data: 0."
 
 
 

@@ -4,7 +4,7 @@
   <!-- ros_control plugin -->
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/doris</robotNamespace>
+      <robotNamespace>/butia_manipulation</robotNamespace>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
     </plugin>
   </gazebo>
@@ -89,7 +89,7 @@
         </range>
       </ray>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/doris/laser/scan</topicName>
+        <topicName>/butia_manipulation/laser/scan</topicName>
         <frameName>hokuyo_link</frameName>
       </plugin>
     </sensor>
@@ -122,7 +122,7 @@
       <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
-        <cameraName>doris/camera1</cameraName>
+        <cameraName>butia_manipulation/camera1</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
         <frameName>camera_link_optical</frameName>
