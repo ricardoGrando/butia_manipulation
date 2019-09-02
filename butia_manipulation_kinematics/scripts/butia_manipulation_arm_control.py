@@ -9,8 +9,6 @@ from butia_manipulation_msgs.msg import *
 
 from kinematics import *
 
-
-
 from gazebo_msgs.srv import GetLinkState 
 from gazebo_msgs.srv import GetModelState
 from gazebo_msgs.srv import SetLinkState 
@@ -22,30 +20,101 @@ from std_msgs.msg import Bool
 from gazebo_msgs.srv import SpawnModel
 import geometry_msgs.msg
 
+# negative right
+SHOULDER_YAW_UP_DOWN_ZERO = 180.0
+SHOULDER_YAW_UP_DOWN_MAX = 225.0  
+SHOULDER_YAW_UP_DOWN_MIN = 135.0
 
+SHOULDER_PITCH_UP_DOWN_ZERO = 180.0
+SHOULDER_PITCH_UP_DOWN_MAX = 225.0 # 45 degrees (down) 
+SHOULDER_PITCH_UP_DOWN_MIN = 135.0 # -45 degrees (up) 
 
+ELBOW_1_PITCH_UP_ZERO = 180.0
+ELBOW_1_PITCH_UP_MAX = 225.0 # -45 degrees (up) 
+ELBOW_1_PITCH_UP_MIN = 125.0 # 45 degrees (down) 
 
-topicList = [   '/butia_manipulation/shoulder_yaw_joint_position_controller/command',
-                '/butia_manipulation/shoulder_pitch_joint_up_position_controller/command',                               
-                '/butia_manipulation/elbow_pitch_joint_up_position_controller/command',                
-                '/butia_manipulation/gripper_pitch_joint_position_controller/command',
-                '/butia_manipulation/gripper_yaw_joint_position_controller/command',
-                '/butia_manipulation/gripper_roll_joint_position_controller/command'
-                #'/butia_manipulation/gripper_right_joint_position_controller/command',
-                #'/butia_manipulation/gripper_left_joint_position_controller/command'
-            ]
+ELBOW_1_PITCH_DOWN_ZERO = 190.0
+ELBOW_1_PITCH_DOWN_MAX = 235.0 # -45 degrees (up) 
+ELBOW_1_PITCH_DOWN_MIN = 135.0 # 45 degrees (down) 
+
+ELBOW_2_PITCH_UP_DOWN_ZERO = 170.0 
+ELBOW_2_PITCH_UP_DOWN_MAX = 215.0 # 45 degrees (down) 
+ELBOW_2_PITCH_UP_DOWN_MIN = 125.0 # 45 degrees (up) 
+
+GRIPPER_PITCH_ZERO = 180.0
+GRIPPER_PITCH_MAX = 225.0 # -45 degrees (up)
+GRIPPER_PITCH_MIN = 135.0 # 45 degrees (down)
+
+#negative right
+GRIPPER_YAW_ZERO = 180.0
+GRIPPER_YAW_MAX = 225.0 # 45 degrees (up)
+GRIPPER_YAW_MIN = 180.0 # -45 degrees (down)
+
+GRIPPER_ROLL_ZERO = 180.0
+GRIPPER_ROLL_MAX = 225.0 
+GRIPPER_ROLL_MIN = 180.0 
+
+angles_raw = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+def shoulder_yaw_joint_position_controller(data):
+    angles_raw[0] = ((data.data - SHOULDER_YAW_UP_DOWN_MIN)/(SHOULDER_YAW_UP_DOWN_MAX-SHOULDER_YAW_UP_DOWN_MIN))*(-math.pi/2) + math.pi/4
+
+def shoulder_pitch_joint_up_position_controller(data):
+    angles_raw[1] = ((data.data - SHOULDER_PITCH_UP_DOWN_MIN)/(SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+
+def shoulder_pitch_joint_down_position_controller(data):
+    angles_raw[2] = ((data.data - SHOULDER_PITCH_UP_DOWN_MIN)/(SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+
+def elbow_1_pitch_joint_up_position_controller(data):
+    angles_raw[3] = ((data.data - ELBOW_1_PITCH_UP_MIN)/(ELBOW_1_PITCH_UP_MAX-ELBOW_1_PITCH_UP_MIN))*(-math.pi/2) + math.pi/4
+
+def elbow_1_pitch_joint_down_position_controller(data):
+    angles_raw[4] = ((data.data - ELBOW_1_PITCH_DOWN_MIN)/(ELBOW_1_PITCH_DOWN_MAX-ELBOW_1_PITCH_DOWN_MIN))*(-math.pi/2) + math.pi/4
+
+def elbow_2_pitch_joint_up_position_controller(data):
+    angles_raw[5] = ((data.data - ELBOW_2_PITCH_UP_DOWN_MIN)/(ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+
+def elbow_2_pitch_joint_down_position_controller(data):
+    angles_raw[6] = ((data.data - ELBOW_2_PITCH_UP_DOWN_MIN)/(ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+
+def gripper_pitch_joint_position_controller(data):
+    angles_raw[7] = ((data.data - GRIPPER_PITCH_MIN)/(GRIPPER_PITCH_MAX-GRIPPER_PITCH_MIN))*(-math.pi/2) + math.pi/4
+
+def gripper_yaw_joint_position_controller(data):
+    angles_raw[8] = ((data.data - GRIPPER_YAW_MIN)/(GRIPPER_YAW_MAX-GRIPPER_YAW_MIN))*(-math.pi/2) + math.pi/4
+
+def gripper_roll_joint_position_controller(data):
+    angles_raw[9] = ((data.data - GRIPPER_ROLL_MIN)/(GRIPPER_ROLL_MAX-GRIPPER_ROLL_MIN))*(-math.pi/2) + math.pi/4
+
+gazeboPubList = [       '/butia_manipulation/shoulder_yaw_joint_position_controller/command',
+                        '/butia_manipulation/shoulder_pitch_joint_up_position_controller/command',  
+                        '/butia_manipulation/shoulder_pitch_joint_down_position_controller/command',                               
+                        '/butia_manipulation/elbow_1_pitch_joint_up_position_controller/command',   
+                        '/butia_manipulation/elbow_1_pitch_joint_down_position_controller/command',   
+                        '/butia_manipulation/elbow_2_pitch_joint_up_position_controller/command',   
+                        '/butia_manipulation/elbow_2_pitch_joint_down_position_controller/command',                                        
+                        '/butia_manipulation/gripper_pitch_joint_position_controller/command',
+                        '/butia_manipulation/gripper_yaw_joint_position_controller/command',
+                        '/butia_manipulation/gripper_roll_joint_position_controller/command'
+                ]
 
 publishers = []
 
-for topic in topicList:
+for topic in gazeboPubList:
     publishers.append(rospy.Publisher(topic, Float64, queue_size=10))
 
-shoulder_elbow_joint = rospy.Publisher('/butia_manipulation/shoulder_elbow_joint_position_controller/command', Float64, queue_size=10)
-shoulder_pitch_joint_down = rospy.Publisher('/butia_manipulation/shoulder_pitch_joint_down_position_controller/command', Float64, queue_size=10)
-elbow_pitch_joint_down = rospy.Publisher('/butia_manipulation/elbow_pitch_joint_down_position_controller/command', Float64, queue_size=10)
-hearth_pitch_joint_down = rospy.Publisher('/butia_manipulation/hearth_joint_position_controller/command', Float64, queue_size=10)
+finished_topic = rospy.Publisher('/butia_manipulation_kinematics_finished', Bool, queue_size=10)                
 
-finished_topic = rospy.Publisher('/butia_manipulation_kinematics_finished', Bool, queue_size=10)
+rospy.Subscriber("/butia_manipulation/shoulder_yaw_joint_position_controller/state", Float64, shoulder_yaw_joint_position_controller)
+rospy.Subscriber("/butia_manipulation/shoulder_pitch_joint_up_position_controller/state", Float64, shoulder_pitch_joint_up_position_controller)
+rospy.Subscriber("/butia_manipulation/shoulder_pitch_joint_down_position_controller/state", Float64, shoulder_pitch_joint_down_position_controller)
+rospy.Subscriber("/butia_manipulation/elbow_1_pitch_joint_up_position_controller/state", Float64, elbow_1_pitch_joint_up_position_controller)
+rospy.Subscriber("/butia_manipulation/elbow_1_pitch_joint_down_position_controller/state", Float64, elbow_1_pitch_joint_down_position_controller)
+rospy.Subscriber("/butia_manipulation/elbow_2_pitch_joint_up_position_controller/state", Float64, elbow_2_pitch_joint_up_position_controller)
+rospy.Subscriber("/butia_manipulation/elbow_2_pitch_joint_down_position_controller/state", Float64, elbow_2_pitch_joint_down_position_controller)
+rospy.Subscriber("/butia_manipulation/gripper_pitch_joint_position_controller/state", Float64, gripper_pitch_joint_position_controller)
+rospy.Subscriber("/butia_manipulation/gripper_yaw_joint_position_controller/state", Float64, gripper_yaw_joint_position_controller)
+rospy.Subscriber("/butia_manipulation/gripper_roll_joint_position_controller/state", Float64, gripper_roll_joint_position_controller)
 
 def inverse_kinematics_callback(data):
     # Pegar o target_end_effector da mensagem recebida e converter para array de numpy
@@ -54,23 +123,12 @@ def inverse_kinematics_callback(data):
     ############################################################
     # MUST BE READ FROM THE MOTORS
     # Angulos da posicao inicial
-    angles = np.array([0.,math.pi/4,-math.pi/4,0.,0.,0.]) 
+    #angles = np.array([angles_raw[0], angles_raw[1], angles_raw[5], angles_raw[7], angles_raw[8], angles_raw[9]]) 
     ###########################################################
-
+    angles = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]) 
+    
     # Taxa de sleep
-    rate = rospy.Rate(10)
-
-    print("asdfasd")
-
-    for j in range(0, len(publishers)):
-        publishers[j].publish(angles[j])  
-        if 'shoulder_pitch' in topicList[j]:
-            shoulder_pitch_joint_down.publish(angles[j])
-            shoulder_elbow_joint.publish(-angles[j])
-        if 'elbow_pitch_joint' in topicList[j]:
-            elbow_pitch_joint_down.publish(angles[j])
-            hearth_pitch_joint_down.publish(-angles[j]) 
-        rate.sleep()
+    rate = rospy.Rate(1)
 
     # Realizar a cinematica direta para obter a posicao e orientacao cartesiana do end effector
     atual_position = forwardKinematics(angles)
@@ -85,70 +143,45 @@ def inverse_kinematics_callback(data):
         atual_position = forwardKinematics(angles)
         distance = target_position - atual_position
 
-        print(max(abs(distance)))           
-        
-        J = calc_jacobian(angles)
-        # Inverter a matriz
-        J_inv = np.linalg.pinv(J)
-        # Calcular o delta do end_effector
-        # O MAIOR ELEMENTO DO VETOR DO DELTA DO END EFFECTOR NAO PODE SER MAIOR QUE step_size
+        #print(atual_position)
+        #print(angles)
 
-        # print(distance)
-        # print(data.step_size)
-        # print(np.max(max(distance)))
+        J = calc_jacobian(angles)
+        J_inv = np.linalg.pinv(J)
+        
         delta_end_effector = ((distance)*data.step_size)/np.max(max(abs(distance)))
 
-        # print(delta_end_effector)
-        # Calcular o delta dos angulos, dado esse delta do end effector
         delta_angles = J_inv.dot(delta_end_effector)
-        # Calcular os novos angulos
-
+        
         if max(delta_angles) > 0.1:
             while(max(delta_angles) > 0.1):
                 delta_angles = delta_angles/10
+                print("adsfasd")
 
         angles += delta_angles			
-        # Normalizar cada angulo em seus respectivos limites para enviar para os motores. Exemplo: angles[0] entre theta_0_max e theta_0_min
-        # Normalizacao = (valor - valor_min)/(valor_max - valor_min)
-        # print(atual_position)
-        # raw_angles = norm_angles(angles)
-        # Publicar os angulos com o publisher                
-
-        for j in range(0, len(publishers)):
-            publishers[j].publish(angles[j])  
-            if 'shoulder_pitch' in topicList[j]:
-                shoulder_pitch_joint_down.publish(angles[j])
-                shoulder_elbow_joint.publish(-angles[j])
-            if 'elbow_pitch_joint' in topicList[j]:
-                elbow_pitch_joint_down.publish(angles[j])
-                hearth_pitch_joint_down.publish(-angles[j])    
-            # print(topicList[j]) 
-            # print(angles[j])
-            # raw_input()
-
+        
+        # publishers[0].publish(180.0) 
+        # publishers[1].publish(SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2))  
+        # publishers[2].publish(SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2)) 
+        # publishers[3].publish(ELBOW_1_PITCH_UP_MIN + (ELBOW_1_PITCH_UP_MAX-ELBOW_1_PITCH_UP_MIN)*(-angles[1] - (math.pi/4))/(-math.pi/2))
+        # publishers[4].publish(ELBOW_1_PITCH_DOWN_MIN + (ELBOW_1_PITCH_DOWN_MAX-ELBOW_1_PITCH_DOWN_MIN)*(-angles[1] - (math.pi/4))/(-math.pi/2))
+        # publishers[5].publish(ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[2] - (-math.pi/4))/(math.pi/2))
+        # publishers[6].publish(ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[2] - (-math.pi/4))/(math.pi/2))
+        # publishers[7].publish(GRIPPER_PITCH_MIN + (GRIPPER_PITCH_MAX-GRIPPER_PITCH_MAX)*(angles[3] - (math.pi/4))/(-math.pi/2))
+        # publishers[8].publish(GRIPPER_YAW_MIN + (GRIPPER_YAW_MAX-GRIPPER_YAW_MAX)*(angles[4] - (math.pi/4))/(-math.pi/2))
+        # publishers[9].publish(180)
+        print (angles_raw)
         finished_topic.publish(False)
 
-        #print(atual_position)
-                    
-            # Dormir pelo tempo definido
-        rate.sleep()
-        
+        raw_input()
+
     print("Arrived!!!")
     finished_topic.publish(True)
     rate.sleep()
 
 def butia_manipulation_control():
-	
-	# Criar o nodo da aplicacao com o nome: butia_manipulation_control		
 	rospy.init_node("butia_manipulation_arm_control", anonymous=False)
 
-	# Criar o subscriber para o topico "/set_joint_angles"
-	# Esse topico recebe um objeto do tipo CartesianMsg
-	# CartesianMsg:
-	#   float64[] target_end_effector
-	#   float64 step_size
-	# Sendo target_end_effector a posicao no espaco desejada step_size o tamanho do passo para chegar la
-	# O callback do subscriber tem que ser a funcao: inverse_kinematics_callback
 	rospy.Subscriber('/butia_manipulation_arm_target_position', CartesianMsg, inverse_kinematics_callback)
 	
 	rospy.spin()
@@ -158,108 +191,4 @@ def butia_manipulation_control():
 
 if __name__ == "__main__": 
     butia_manipulation_control()      
-    # try:
-    #     butia_manipulation_control()
-    # except rospy.ROSInterruptException:
-    #     pass
-
-# def spawnObject(count, posx, posy, posz):
-        
-#     spawn = rospy.ServiceProxy("gazebo/spawn_sdf_model", SpawnModel)
-
-#     rospy.wait_for_service("gazebo/spawn_sdf_model")
-
-#     initial_pose = geometry_msgs.msg.Pose()
-#     initial_pose.position.x = posx
-#     initial_pose.position.y = posy
-#     initial_pose.position.z = posz
-
-#     f = open('/home/nautec/.gazebo/models/cube_spiral/model.sdf','r')
-#     sdff = f.read()
-
-#     print spawn("cube"+str(count), sdff, "default", initial_pose, "world")
- 
-        
-
-# # self.endEffectorService.spawnObject(spawnCount, self.endEffectorService.pos_x, \
-# #                                                 self.endEffectorService.pos_y, self.endEffectorService.pos_z)
-
-# def spiral(stepSize, radius, endEffectorPosition, numberSpirals):
-#   endEffector = np.zeros(shape=(int(2*math.pi*radius/stepSize)*numberSpirals,6))
-#   endEffector[:] = endEffectorPosition
-        
-#   angle = math.asin(stepSize/(radius))
     
-#   for i in range(0, endEffector.shape[0]):
-#     endEffector[i][2] = endEffector[i][2] - radius*stepSize*(i+1)       
-#     endEffector[i][0] = endEffector[i][0] + radius*math.cos(angle*(i+1)) - radius
-#     endEffector[i][1] = endEffector[i][1] + radius*math.sin(angle*(i+1))
-        
-#     if i > 0:
-#       dx = (endEffector[i][0] - endEffector[i-1][0])
-#       dy = (endEffector[i][1] - endEffector[i-1][1])
-#       dz = (endEffector[i][2] - endEffector[i-1][2])
-#       d =  ( dx**2 + dy**2 + dz**2 )**(0.5)
-            
-#   return endEffector
-
-# if __name__ == "__main__":  
-
-#     rospy.init_node("butia_manipulation_arm_control", anonymous=False)
-
-#     endEffectorPosition = np.array([0.5447546532517447, 0.0, 0.8987512626584708, 1.5707963267948966, 0.0, 1.57079632679489666])
-
-#     trajectory = spiral(0.01, 0.075, endEffectorPosition, 4)
-
-#     angles = np.array([0,math.pi/4,-math.pi/4,0.0,0.0,0.1]) 
-
-#     rate = rospy.Rate(10)
-
-#     for j in range(0, len(publishers)):
-#         publishers[j].publish(angles[j])  
-#         if 'shoulder_pitch' in topicList[j]:
-#             shoulder_pitch_joint_down.publish(angles[j])
-#             shoulder_elbow_joint.publish(-angles[j])
-#         if 'elbow_pitch_joint' in topicList[j]:
-#             elbow_pitch_joint_down.publish(angles[j])
-#             hearth_pitch_joint_down.publish(-angles[j]) 
-#         rate.sleep()
-
-#     raw_input()
-
-#     for i in range(1, trajectory.shape[0]):
-# 		# Realizar a cinematica direta para obter a posicao e orientacao cartesiana do end effector
-#         atual_position = forwardKinematics(angles)
-        
-#         J = calc_jacobian(angles)
-#         # Inverter a matriz
-#         J_inv = np.linalg.pinv(J)
-#         # Calcular o delta do end_effector
-#         # O MAIOR ELEMENTO DO VETOR DO DELTA DO END EFFECTOR NAO PODE SER MAIOR QUE step_size
-#         delta_end_effector = trajectory[i] - trajectory[i-1]
-#         # Calcular o delta dos angulos, dado esse delta do end effector
-#         delta_angles = J_inv.dot(delta_end_effector)
-#         # Calcular os novos angulos
-#         angles += delta_angles			
-#         # Normalizar cada angulo em seus respectivos limites para enviar para os motores. Exemplo: angles[0] entre theta_0_max e theta_0_min
-#         # Normalizacao = (valor - valor_min)/(valor_max - valor_min)
-#         print(atual_position)
-#         # raw_angles = norm_angles(angles)
-#         # Publicar os angulos com o publisher
-#         for j in range(0, len(publishers)):
-#             publishers[j].publish(angles[j])  
-#             if 'shoulder_pitch' in topicList[j]:
-#                 shoulder_pitch_joint_down.publish(angles[j])
-#                 shoulder_elbow_joint.publish(-angles[j])
-#             if 'elbow_pitch_joint' in topicList[j]:
-#                 elbow_pitch_joint_down.publish(angles[j])
-#                 hearth_pitch_joint_down.publish(-angles[j])            
-
-#         #atual_position[0] = 
-
-#         spawnObject(i, atual_position[0], atual_position[1], atual_position[2])
-        
-#         # Dormir pelo tempo definido
-#         #time.sleep(0.1)            
-#         rate.sleep()
-        

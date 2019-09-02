@@ -15,28 +15,6 @@ GRIPPER_PITCH_ID = 14
 GRIPPER_YAW_ID = 12
 GRIPPER_ROLL_ID = 253 # to be found
 
-GRIPPER_PITCH_ZERO = 180
-GRIPPER_PITCH_MAX = 225 # 45 degrees (up)
-GRIPPER_PITCH_MIN = 135 # 45 degrees (down)
-
-GRIPPER_YAW_ZERO = 180
-
-ELBOW_2_PITCH_UP_DOWN_ZERO = 170 
-ELBOW_2_PITCH_UP_DOWN_MAX = 215 # 45 degrees (down) 
-ELBOW_2_PITCH_UP_DOWN_MIN = 125 # 45 degrees (up) 
-
-ELBOW_1_PITCH_UP_ZERO = 180
-ELBOW_1_PITCH_UP_MAX = 225 # 45 degrees (up) 
-ELBOW_1_PITCH_UP_MIN = 125 # 45 degrees (down) 
-
-ELBOW_1_PITCH_DOWN_ZERO = 190
-ELBOW_1_PITCH_DOWN_MAX = 235 # 45 degrees (up) 
-ELBOW_1_PITCH_DOWN_MIN = 135 # 45 degrees (down) 
-
-SHOULDER_PITCH_UP_DOWN_ZERO = 180
-SHOULDER_PITCH_UP_DOWN_MAX = 225 # 45 degrees (down) 
-SHOULDER_PITCH_UP_DOWN_MIN = 135 # 45 degrees (up) 
-
 PORT = '/dev/ttyUSB0'
 BAUDRATE = 1000000
 serial = pd.DxlComm(port=PORT, baudrate=BAUDRATE)
@@ -55,6 +33,7 @@ dict_topics = { SHOULDER_YAW_ID: 'shoulder_yaw_joint_position_controller',
 
 dyns = []
 #dyns.append(pd.Joint(SHOULDER_YAW_ID))
+#dyns.append(0)
 dyns.append(pd.Joint(SHOULDER_PITCH_UP_ID))
 dyns.append(pd.Joint(SHOULDER_PITCH_DOWN_ID))
 dyns.append(pd.Joint(ELBOW_1_PITCH_UP_ID))
@@ -64,5 +43,6 @@ dyns.append(pd.Joint(ELBOW_2_PITCH_DOWN_ID))
 dyns.append(pd.Joint(GRIPPER_PITCH_ID))
 dyns.append(pd.Joint(GRIPPER_YAW_ID))
 #dyns.append(pd.Joint(GRIPPER_ROLL_ID))
+#dyns.append(0)
 
 serial.attach_joints(dyns)

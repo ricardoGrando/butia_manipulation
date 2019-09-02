@@ -6,34 +6,44 @@ import PyDynamixel_v2 as pd
 from defines import *
 
 def shoulder_yaw_joint_position_controller(data):
-    # serial.joints[0].enable_torque()
+    #serial.joints[0].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def shoulder_pitch_joint_up_position_controller(data):
-    print("porra")
+    serial.joints[0].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def shoulder_pitch_joint_down_position_controller(data):
-    print("porra")
+    serial.joints[1].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def elbow_1_pitch_joint_up_position_controller(data):
-    print("porra")
+    serial.joints[2].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def elbow_1_pitch_joint_down_position_controller(data):
-    print("porra")
+    serial.joints[3].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def elbow_2_pitch_joint_up_position_controller(data):
-    print("porra")
+    serial.joints[4].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def elbow_2_pitch_joint_down_position_controller(data):
-    print("porra")
+    serial.joints[5].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def gripper_pitch_joint_position_controller(data):
-    serial.joints[-2].send_angle(180)
+    serial.joints[6].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def gripper_yaw_joint_position_controller(data):
-    print("porra")
+    serial.joints[7].send_angle(data.data)
+    print("Send "+str(data.data))
 
 def gripper_roll_joint_position_controller(data):
-    print("porra")
+    #serial.joints[9].send_angle(data.data)
+    print("Send "+str(data.data))
 
 if __name__ == "__main__": 
     rospy.init_node("dynamixel_interface_command", anonymous=False)
