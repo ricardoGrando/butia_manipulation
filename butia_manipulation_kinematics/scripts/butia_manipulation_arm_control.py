@@ -20,6 +20,8 @@ from std_msgs.msg import Bool
 from gazebo_msgs.srv import SpawnModel
 import geometry_msgs.msg
 
+from defines import *
+
 # negative right
 SHOULDER_YAW_UP_DOWN_ZERO = 180.0
 SHOULDER_YAW_UP_DOWN_MAX = 225.0  
@@ -54,67 +56,25 @@ GRIPPER_ROLL_ZERO = 180.0
 GRIPPER_ROLL_MAX = 225.0 
 GRIPPER_ROLL_MIN = 180.0 
 
-angles_raw = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+finished_topic = rospy.Publisher('/butia_manipulation_kinematics_finished', Bool, queue_size=10)
 
-def shoulder_yaw_joint_position_controller(data):
-    angles_raw[0] = ((data.data - SHOULDER_YAW_UP_DOWN_MIN)/(SHOULDER_YAW_UP_DOWN_MAX-SHOULDER_YAW_UP_DOWN_MIN))*(-math.pi/2) + math.pi/4
+finished_topic = rospy.Publisher('/butia_manipulation_kinematics_finished', Bool, queue_size=10)  
 
-def shoulder_pitch_joint_up_position_controller(data):
-    angles_raw[1] = ((data.data - SHOULDER_PITCH_UP_DOWN_MIN)/(SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+def get_angles():
+    read_angles = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    
+    read_angles[0] = ((serial.joints[0].get_angle() - SHOULDER_YAW_UP_DOWN_MIN)/(SHOULDER_YAW_UP_DOWN_MAX-SHOULDER_YAW_UP_DOWN_MIN))*(-math.pi/2) + math.pi/4
+    read_angles[1] = ((serial.joints[1].get_angle() - SHOULDER_PITCH_UP_DOWN_MIN)/(SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+    read_angles[2] = ((serial.joints[2].get_angle() - SHOULDER_PITCH_UP_DOWN_MIN)/(SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+    read_angles[3] = ((serial.joints[3].get_angle() - ELBOW_1_PITCH_UP_MIN)/(ELBOW_1_PITCH_UP_MAX-ELBOW_1_PITCH_UP_MIN))*(-math.pi/2) + math.pi/2
+    read_angles[4] = ((serial.joints[4].get_angle() - ELBOW_1_PITCH_DOWN_MIN)/(ELBOW_1_PITCH_DOWN_MAX-ELBOW_1_PITCH_DOWN_MIN))*(-math.pi/2) + math.pi/4
+    read_angles[5] = ((serial.joints[5].get_angle() - ELBOW_2_PITCH_UP_DOWN_MIN)/(ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+    read_angles[6] = ((serial.joints[6].get_angle() - ELBOW_2_PITCH_UP_DOWN_MIN)/(ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
+    read_angles[7] = ((serial.joints[7].get_angle() - GRIPPER_PITCH_MIN)/(GRIPPER_PITCH_MAX-GRIPPER_PITCH_MIN))*(-math.pi/2) + math.pi/4
+    read_angles[8] = ((serial.joints[8].get_angle() - GRIPPER_YAW_MIN)/(GRIPPER_YAW_MAX-GRIPPER_YAW_MIN))*(-math.pi/2)
+    # read_angles[9] = ((serial.joints[9].get_angle() - GRIPPER_ROLL_MIN)/(GRIPPER_ROLL_MAX-GRIPPER_ROLL_MIN))*(-math.pi/2) + math.pi/4
 
-def shoulder_pitch_joint_down_position_controller(data):
-    angles_raw[2] = ((data.data - SHOULDER_PITCH_UP_DOWN_MIN)/(SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
-
-def elbow_1_pitch_joint_up_position_controller(data):
-    angles_raw[3] = ((data.data - ELBOW_1_PITCH_UP_MIN)/(ELBOW_1_PITCH_UP_MAX-ELBOW_1_PITCH_UP_MIN))*(-math.pi/2) + math.pi/4
-
-def elbow_1_pitch_joint_down_position_controller(data):
-    angles_raw[4] = ((data.data - ELBOW_1_PITCH_DOWN_MIN)/(ELBOW_1_PITCH_DOWN_MAX-ELBOW_1_PITCH_DOWN_MIN))*(-math.pi/2) + math.pi/4
-
-def elbow_2_pitch_joint_up_position_controller(data):
-    angles_raw[5] = ((data.data - ELBOW_2_PITCH_UP_DOWN_MIN)/(ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
-
-def elbow_2_pitch_joint_down_position_controller(data):
-    angles_raw[6] = ((data.data - ELBOW_2_PITCH_UP_DOWN_MIN)/(ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN))*(math.pi/2) + -math.pi/4
-
-def gripper_pitch_joint_position_controller(data):
-    angles_raw[7] = ((data.data - GRIPPER_PITCH_MIN)/(GRIPPER_PITCH_MAX-GRIPPER_PITCH_MIN))*(-math.pi/2) + math.pi/4
-
-def gripper_yaw_joint_position_controller(data):
-    angles_raw[8] = ((data.data - GRIPPER_YAW_MIN)/(GRIPPER_YAW_MAX-GRIPPER_YAW_MIN))*(-math.pi/2) + math.pi/4
-
-def gripper_roll_joint_position_controller(data):
-    angles_raw[9] = ((data.data - GRIPPER_ROLL_MIN)/(GRIPPER_ROLL_MAX-GRIPPER_ROLL_MIN))*(-math.pi/2) + math.pi/4
-
-gazeboPubList = [       '/butia_manipulation/shoulder_yaw_joint_position_controller/command',
-                        '/butia_manipulation/shoulder_pitch_joint_up_position_controller/command',  
-                        '/butia_manipulation/shoulder_pitch_joint_down_position_controller/command',                               
-                        '/butia_manipulation/elbow_1_pitch_joint_up_position_controller/command',   
-                        '/butia_manipulation/elbow_1_pitch_joint_down_position_controller/command',   
-                        '/butia_manipulation/elbow_2_pitch_joint_up_position_controller/command',   
-                        '/butia_manipulation/elbow_2_pitch_joint_down_position_controller/command',                                        
-                        '/butia_manipulation/gripper_pitch_joint_position_controller/command',
-                        '/butia_manipulation/gripper_yaw_joint_position_controller/command',
-                        '/butia_manipulation/gripper_roll_joint_position_controller/command'
-                ]
-
-publishers = []
-
-for topic in gazeboPubList:
-    publishers.append(rospy.Publisher(topic, Float64, queue_size=10))
-
-finished_topic = rospy.Publisher('/butia_manipulation_kinematics_finished', Bool, queue_size=10)                
-
-rospy.Subscriber("/butia_manipulation/shoulder_yaw_joint_position_controller/state", Float64, shoulder_yaw_joint_position_controller)
-rospy.Subscriber("/butia_manipulation/shoulder_pitch_joint_up_position_controller/state", Float64, shoulder_pitch_joint_up_position_controller)
-rospy.Subscriber("/butia_manipulation/shoulder_pitch_joint_down_position_controller/state", Float64, shoulder_pitch_joint_down_position_controller)
-rospy.Subscriber("/butia_manipulation/elbow_1_pitch_joint_up_position_controller/state", Float64, elbow_1_pitch_joint_up_position_controller)
-rospy.Subscriber("/butia_manipulation/elbow_1_pitch_joint_down_position_controller/state", Float64, elbow_1_pitch_joint_down_position_controller)
-rospy.Subscriber("/butia_manipulation/elbow_2_pitch_joint_up_position_controller/state", Float64, elbow_2_pitch_joint_up_position_controller)
-rospy.Subscriber("/butia_manipulation/elbow_2_pitch_joint_down_position_controller/state", Float64, elbow_2_pitch_joint_down_position_controller)
-rospy.Subscriber("/butia_manipulation/gripper_pitch_joint_position_controller/state", Float64, gripper_pitch_joint_position_controller)
-rospy.Subscriber("/butia_manipulation/gripper_yaw_joint_position_controller/state", Float64, gripper_yaw_joint_position_controller)
-rospy.Subscriber("/butia_manipulation/gripper_roll_joint_position_controller/state", Float64, gripper_roll_joint_position_controller)
+    return read_angles
 
 def inverse_kinematics_callback(data):
     # Pegar o target_end_effector da mensagem recebida e converter para array de numpy
@@ -123,9 +83,10 @@ def inverse_kinematics_callback(data):
     ############################################################
     # MUST BE READ FROM THE MOTORS
     # Angulos da posicao inicial
-    #angles = np.array([angles_raw[0], angles_raw[1], angles_raw[5], angles_raw[7], angles_raw[8], angles_raw[9]]) 
+    #angles = np.array([read_angles[0], read_angles[1], read_angles[5], read_angles[7], read_angles[8], read_angles[9]]) 
     ###########################################################
-    angles = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]) 
+    read_angles = get_angles()
+    angles = np.array([read_angles[1], read_angles[5], read_angles[7], read_angles[8], read_angles[9]])  
     
     # Taxa de sleep
     rate = rospy.Rate(1)
@@ -133,23 +94,50 @@ def inverse_kinematics_callback(data):
     # Realizar a cinematica direta para obter a posicao e orientacao cartesiana do end effector
     atual_position = forwardKinematics(angles)
     distance = target_position - atual_position
-   
+
+    backup_gripper_roll = 0.0
+    backup_gripper_yaw = 0.0
+    backup_gripper_pitch = 0.0
+
+    raw_input()
+
     while(max(abs(distance)) > 0.01):
         ############################################################
-        # MUST BE READ FROM THE MOTORS
-        angles = angles
+        read_angles = get_angles()
+        angles = np.array([read_angles[1], read_angles[5], read_angles[7], read_angles[8], read_angles[9]]) 
+
+        # angles[3] = backup_gripper_yaw
+        # angles[4] = backup_gripper_roll 
+        # angles[2] = backup_gripper_pitch
         ############################################################
         # Realizar a cinematica direta para obter a posicao e orientacao cartesiana do end effector        
         atual_position = forwardKinematics(angles)
         distance = target_position - atual_position
 
-        #print(atual_position)
+        print(atual_position)
         #print(angles)
 
+        # print(SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[0] - (-math.pi/4))/(math.pi/2), \
+        #     SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[0] - (-math.pi/4))/(math.pi/2), \
+        #     ELBOW_1_PITCH_UP_MIN + (ELBOW_1_PITCH_UP_MAX-ELBOW_1_PITCH_UP_MIN)*(-angles[0] - (math.pi/2))/(-math.pi/2), \
+        #     ELBOW_1_PITCH_DOWN_MIN + (ELBOW_1_PITCH_DOWN_MAX-ELBOW_1_PITCH_DOWN_MIN)*(-angles[0] - (math.pi/4))/(-math.pi/2), \
+        #     ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2), \
+        #     ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2), \
+        #     GRIPPER_PITCH_MIN + (GRIPPER_PITCH_MAX-GRIPPER_PITCH_MIN)*(angles[2] - (math.pi/4))/(-math.pi/2), \
+        #     GRIPPER_YAW_MIN + (GRIPPER_YAW_MAX-GRIPPER_YAW_MIN)*(angles[3])/(-math.pi/2)
+        # )
+        
+        # print("#########################################################")
+        # print(serial.joints[1].get_angle(), serial.joints[2].get_angle(), serial.joints[3].get_angle(),\
+        #         serial.joints[4].get_angle(), serial.joints[5].get_angle(), serial.joints[6].get_angle(), \
+        #         serial.joints[7].get_angle(), serial.joints[8].get_angle())
+        # print("#########################################################")
+        
         J = calc_jacobian(angles)
         J_inv = np.linalg.pinv(J)
         
         delta_end_effector = ((distance)*data.step_size)/np.max(max(abs(distance)))
+        print("End effector: "+str(delta_end_effector))
 
         delta_angles = J_inv.dot(delta_end_effector)
         
@@ -158,23 +146,30 @@ def inverse_kinematics_callback(data):
                 delta_angles = delta_angles/10
                 print("adsfasd")
 
-        angles += delta_angles			
+        print(angles)
+        angles += delta_angles	
+        print("#########################################################")
+        print(delta_angles)
+        print("#########################################################")
+        # backup_gripper_roll = angles[4]
+        # backup_gripper_yaw = angles[3]
+        # backup_gripper_pitch = angles[2]
         
-        # publishers[0].publish(180.0) 
-        # publishers[1].publish(SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2))  
-        # publishers[2].publish(SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2)) 
-        # publishers[3].publish(ELBOW_1_PITCH_UP_MIN + (ELBOW_1_PITCH_UP_MAX-ELBOW_1_PITCH_UP_MIN)*(-angles[1] - (math.pi/4))/(-math.pi/2))
-        # publishers[4].publish(ELBOW_1_PITCH_DOWN_MIN + (ELBOW_1_PITCH_DOWN_MAX-ELBOW_1_PITCH_DOWN_MIN)*(-angles[1] - (math.pi/4))/(-math.pi/2))
-        # publishers[5].publish(ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[2] - (-math.pi/4))/(math.pi/2))
-        # publishers[6].publish(ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[2] - (-math.pi/4))/(math.pi/2))
-        # publishers[7].publish(GRIPPER_PITCH_MIN + (GRIPPER_PITCH_MAX-GRIPPER_PITCH_MAX)*(angles[3] - (math.pi/4))/(-math.pi/2))
-        # publishers[8].publish(GRIPPER_YAW_MIN + (GRIPPER_YAW_MAX-GRIPPER_YAW_MAX)*(angles[4] - (math.pi/4))/(-math.pi/2))
-        # publishers[9].publish(180)
-        print (angles_raw)
+        serial.joints[0].send_angle(180.0)
+        # print((SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2)))
+        serial.joints[1].send_angle(SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[0] - (-math.pi/4))/(math.pi/2))
+        serial.joints[2].send_angle(SHOULDER_PITCH_UP_DOWN_MIN + (SHOULDER_PITCH_UP_DOWN_MAX-SHOULDER_PITCH_UP_DOWN_MIN)*(angles[0] - (-math.pi/4))/(math.pi/2)) 
+        serial.joints[3].send_angle(ELBOW_1_PITCH_UP_MIN + (ELBOW_1_PITCH_UP_MAX-ELBOW_1_PITCH_UP_MIN)*(-angles[0] - (math.pi/2))/(-math.pi/2))
+        serial.joints[4].send_angle(ELBOW_1_PITCH_DOWN_MIN + (ELBOW_1_PITCH_DOWN_MAX-ELBOW_1_PITCH_DOWN_MIN)*(-angles[0] - (math.pi/4))/(-math.pi/2))
+        serial.joints[5].send_angle(ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2))
+        serial.joints[6].send_angle(ELBOW_2_PITCH_UP_DOWN_MIN + (ELBOW_2_PITCH_UP_DOWN_MAX-ELBOW_2_PITCH_UP_DOWN_MIN)*(angles[1] - (-math.pi/4))/(math.pi/2))
+        serial.joints[7].send_angle(GRIPPER_PITCH_MIN + (GRIPPER_PITCH_MAX-GRIPPER_PITCH_MIN)*(angles[2] - (math.pi/4))/(-math.pi/2))
+        serial.joints[8].send_angle(GRIPPER_YAW_MIN + (GRIPPER_YAW_MAX-GRIPPER_YAW_MIN)*(angles[3])/(-math.pi/2))
+        # serial.joints[9].send_angle(180)        		
+        #print ([read_angles[0], read_angles[1], read_angles[5], read_angles[7], read_angles[8], read_angles[9]])
         finished_topic.publish(False)
-
         raw_input()
-
+        
     print("Arrived!!!")
     finished_topic.publish(True)
     rate.sleep()

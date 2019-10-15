@@ -1,6 +1,6 @@
 import PyDynamixel_v2 as pd
 
-SHOULDER_YAW_ID = 254 # to be found
+SHOULDER_YAW_ID = 56 # to be found
 
 SHOULDER_PITCH_UP_ID = 2 # to be found
 SHOULDER_PITCH_DOWN_ID = 1
@@ -32,8 +32,7 @@ dict_topics = { SHOULDER_YAW_ID: 'shoulder_yaw_joint_position_controller',
                 }
 
 dyns = []
-#dyns.append(pd.Joint(SHOULDER_YAW_ID))
-#dyns.append(0)
+dyns.append(pd.Joint(SHOULDER_YAW_ID))
 dyns.append(pd.Joint(SHOULDER_PITCH_UP_ID))
 dyns.append(pd.Joint(SHOULDER_PITCH_DOWN_ID))
 dyns.append(pd.Joint(ELBOW_1_PITCH_UP_ID))
