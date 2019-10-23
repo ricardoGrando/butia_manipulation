@@ -13,7 +13,10 @@ ELBOW_2_PITCH_DOWN_ID = 160
 
 GRIPPER_PITCH_ID = 14
 GRIPPER_YAW_ID = 12
-GRIPPER_ROLL_ID = 253 # to be found
+GRIPPER_ROLL_ID = 55 # to be found
+
+GRIPPER_LEFT = 52
+GRIPPER_RIGHT = 50
 
 PORT = '/dev/ttyUSB0'
 BAUDRATE = 1000000
@@ -29,6 +32,9 @@ dyns.append(pd.Joint(ELBOW_2_PITCH_UP_ID))
 dyns.append(pd.Joint(ELBOW_2_PITCH_DOWN_ID))
 dyns.append(pd.Joint(GRIPPER_PITCH_ID))
 dyns.append(pd.Joint(GRIPPER_YAW_ID))
+dyns.append(pd.Joint(GRIPPER_ROLL_ID))
+dyns.append(pd.Joint(GRIPPER_LEFT))
+dyns.append(pd.Joint(GRIPPER_RIGHT))
 #dyns.append(pd.Joint(GRIPPER_ROLL_ID))
 #dyns.append(0)
 

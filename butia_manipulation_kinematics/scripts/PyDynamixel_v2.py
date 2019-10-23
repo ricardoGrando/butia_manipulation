@@ -342,6 +342,16 @@ class Joint(object):
 
         return self.curr_angle
 
+    def get_effort(self):
+        self.curr_value, dxl_comm_result, dxl_error = self.packet_handler.read2ByteTxRx(self.port_handler, self.servo_id, 40)
+        
+        if dxl_comm_result != COMM_SUCCESS:
+            print("%s" % self.packet_handler.getTxRxResult(dxl_comm_result))
+        elif dxl_error:
+            print("%s" % self.packet_handler.getRxPacketError(dxl_error))
+
+        return self.curr_value    
+
     def enable_torque(self):
         ''' Enables torque in this joint
         Usage: self.enable_torque()
